@@ -1,35 +1,44 @@
+from functools import reduce
+# V is sparse Vector with O(k)=o(n) elements
+
+# Time: O(1)
 def getitem(v,d):
     "Returns the value of entry d in v"
     assert d in v.D
-    pass
+    return 0 if d not in v.f else v.f[d];
 
+# Time: O(1)
 def setitem(v,d,val):
     "Set the element of v with label d to be val"
     assert d in v.D
-    pass
+    v.f[d] = val
 
+# Time: O(k(u) + k(v))
 def equal(u,v):
     "Returns true iff u is equal to v"
     assert u.D == v.D
-    pass
+    for k in set(u.f.keys()) | set(v.f.keys()):
+        if u[k]!=v[k]:
+            return False
+    return True
 
 def add(u,v):
     "Returns the sum of the two vectors"
     assert u.D == v.D
-    pass
+    return Vec(v.D, {d:u[d]+v[d] for d in u.D if u[d] or v[d]})
 
 def dot(u,v):
     "Returns the dot product of the two vectors"
     assert u.D == v.D
-    pass
+    return sum( (u[d]*v[d] for d in u.D if u[d] and v[d]) )
 
 def scalar_mul(v, alpha):
     "Returns the scalar-vector product alpha times v"
-    pass
+    return Vec(v.D, {k:alpha*f for k,f in v.f.items() if f})
 
 def neg(v):
     "Returns the negation of a vector"
-    pass
+    return Vec(v.D, {k:-f for k,f in v.f.items() if f})
 
 ##### NO NEED TO MODIFY BELOW HERE #####
 class Vec:
